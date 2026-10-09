@@ -5,6 +5,7 @@ read a small file from GitHub. This script runs on GitHub's servers once or twic
 
 Usage:  python fetch_tesouro.py [output_path] [source_url]
 """
+import os
 import sys
 import urllib.request
 from datetime import datetime, timedelta
@@ -59,6 +60,9 @@ def main():
     url = sys.argv[2] if len(sys.argv) > 2 else SOURCE_URL
     text = decode(download(url))
     result = filter_recent(text, datetime.now())
+    folder = os.path.dirname(out_path)
+    if folder:
+        os.makedirs(folder, exist_ok=True)      # the data/ folder does not have to exist beforehand
     with open(out_path, "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(result) + "\n")
     print("Saved %d rows to %s" % (len(result) - 1, out_path))
