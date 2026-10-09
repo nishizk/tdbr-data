@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: tesouro-update   # never run two updates at the same time
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
